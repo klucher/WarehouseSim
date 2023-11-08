@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,44 @@ namespace WarehouseSim
             Docks = new List<Dock>();
             Entrance = new Queue<Truck>();
             timeIntervals = 1;  //starting this at 1 for now instead of 0 because we will be using the time intervals for math equations later
+        }
+
+        public double GetTotalSales()
+        {
+            double totalSales = 0;
+            foreach (var dock in Docks)
+            {
+                totalSales += dock.TotalSales;
+            }
+            return totalSales;
+        }
+
+        public double GetTotalCreatesUnloaded()
+        {
+            int totalCrates = 0;
+            foreach (var dock in Docks)
+            {
+                totalCrates += dock.TotalCrates;
+            }
+            return totalCrates;
+        }
+        public int GetTotalTimeInUse()
+        {
+            int totalTimeInUse = 0;
+            foreach (var dock in Docks)
+            {
+                totalTimeInUse += dock.TimeInUse;
+            }
+            return totalTimeInUse;
+        }
+        public double GetTotalTimeNotInUse()
+        {
+            int totalTimeNotInUse = 0;
+            foreach (var dock in Docks)
+            {
+                totalTimeNotInUse += dock.TimeNotInUse;
+            }
+            return totalTimeNotInUse;
         }
 
         /// <summary>
@@ -63,6 +102,9 @@ namespace WarehouseSim
                     // adding the truck to a random dock right now, need to add where this searches for the dock with the lowest line for efficiency?
                     int dockSelection = rand.Next(0, docksAmount);
                     Docks[dockSelection].JoinLine(Entrance.Dequeue());
+
+                    // Debug
+                    Console.WriteLine("Truck joined Dock #" + dockSelection);
                 }
 
                 // starting the simulation with a 50% chance each time interval to have a truck show up at the entrance.
@@ -72,6 +114,10 @@ namespace WarehouseSim
                 {
                     Truck truck = new Truck("Billy", "MotherTrucker");
                     Entrance.Enqueue(truck);
+
+                    //Debug
+                    Console.WriteLine("Driver: " + truck.Driver + "\nCompany: " + truck.DeliveryCompany);
+
                     // Update statistics for TotalTrucks
                 }
 
@@ -86,16 +132,37 @@ namespace WarehouseSim
                         if (dock.Line.Count > 0)
                         {
                             dock.SendOff();  //this will move the next truck up
+
+                            // debug
+                            Console.WriteLine("Moving next truck up.");
+
                             // Update statistics for TimeInUse
+                            dock.TimeInUse++;
                         }
-                        // Update statistics for TimeNotInUse
+                        else
+                        {
+                            // Update statistics for TimeNotInUse
+                            dock.TimeNotInUse++;
+
+                            // debug
+                            Console.WriteLine("No truck waiting.");
+                        }
                     }
                     else
                     {
                         if (!dock.Unloading())
                         {
+                            // debug
+                            Console.WriteLine("Dock is now unloading.");
                             dock.currentTruck.Unload();
                         }
+
+                        dock.TotalSales += dock.currentTruck.TruckValue;
+
+                        // debug
+                        Console.WriteLine("Adding current truck value to total sales.");
+                        Console.WriteLine("Current truck value: " + dock.currentTruck.TruckValue);
+                        Console.WriteLine("Dock Total Sales: " + dock.TotalSales);
 
                         //if it is still unloading, then logically would we need to do anything? besides just add the truck to the end of the line
                         //or send to another open dock if there are any? - mel
@@ -105,6 +172,9 @@ namespace WarehouseSim
 
                 // proceed to the next time interval
                 timeIntervals++;
+
+                // debug
+                Console.WriteLine("Proceding to next time interval: " + timeIntervals);
             }
 
         }
@@ -144,15 +214,19 @@ namespace WarehouseSim
             int peakTime = 24;
 
             // Standard deviation for the bell curve
-            double standardDeviation = 8.0; // Adjust as needed.
+            // Lower = more spread out, higher = more concentration around peakTime
+            double standardDeviation = 15.0; // Adjust as needed. 10.0 - 20.0 seems to be the best
 
             // Calculate probability of a truck arriving at the given time increment
-            double probability = Math.Exp(time - Math.Pow(time - peakTime, 2) /
-                (2 * Math.Pow(standardDeviation, 2))) /
-                (standardDeviation * Math.Sqrt(2 * Math.PI));
+            double probability = Math.Exp(-Math.Pow(time - peakTime, 2) / (2 * Math.Pow(standardDeviation, 2)));
 
             // Generate random number between 0 and 1.
             double randomvalue = new Random().NextDouble();
+
+            // debug
+            Console.WriteLine("\nInterval Time: " + timeIntervals);
+            Console.WriteLine("Peak Time: " + peakTime);
+            Console.WriteLine("Is Truck Arriving (yes if positive): " + (probability - randomvalue));
 
             // If randomValue is less than probability, then a truck arrives.
             return randomvalue < probability;

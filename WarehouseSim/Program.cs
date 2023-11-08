@@ -17,14 +17,10 @@ namespace WarehouseSim
             Warehouse warehouse = new Warehouse();
 
             warehouse.Run();
-
-            //added this for testing just to see if the docks were created correctly. can use for troubleshooting
-            foreach (Dock dock in warehouse.Docks)
-            {
-                Console.WriteLine(dock.Id);
-            }
-            
-
+            Console.WriteLine("Total Sales: " + warehouse.GetTotalSales());
+            Console.WriteLine("Crates Unloaded: " + warehouse.GetTotalCreatesUnloaded());
+            Console.WriteLine("Time In Use: " + warehouse.GetTotalTimeInUse());
+            Console.WriteLine("Time Not In Use: " + warehouse.GetTotalTimeNotInUse());
         }
     }
 }

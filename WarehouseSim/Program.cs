@@ -17,7 +17,7 @@ namespace WarehouseSim
             Warehouse warehouse = new Warehouse();
 
             warehouse.Run();
-            Console.WriteLine("Total Sales: " + warehouse.GetTotalSales());
+            Console.WriteLine("\n\nTotal Sales: " + warehouse.GetTotalSales());
             Console.WriteLine("Crates Unloaded: " + warehouse.GetTotalCreatesUnloaded());
             Console.WriteLine("Time In Use: " + warehouse.GetTotalTimeInUse());
             Console.WriteLine("Time Not In Use: " + warehouse.GetTotalTimeNotInUse());

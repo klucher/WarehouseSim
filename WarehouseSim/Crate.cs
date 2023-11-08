@@ -26,7 +26,7 @@ namespace WarehouseSim
         // id as an int that can be counted upward
         // to have all of the crates talk to each other, this variable will really need to be coming from somewhere outside of crate class
         // making this static might actually fix this issue, need to test to see
-        private static int id = 0000001;
+        private static int id = 0000000;
 
 
         /// <summary>

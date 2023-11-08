@@ -25,24 +25,19 @@ namespace WarehouseSim
         public int TimeInUse { get; set; }
         public int TimeNotInUse { get; set; }
 
-        public Truck currentTruck { get; set; }
-
-        private static int id = 0000001;
-
         /// <summary>
-        /// default constructor to create an empty dock
+        /// general method to create an empty dock
         /// </summary>
         /// <param name="Id">the name/UIN of the dock</param>
-        public Dock()
+        public Dock(string Id)
         {
-            Id = id++.ToString();
+            this.Id = Id;
             Line = new Queue<Truck>();
             TotalSales = 0;
             TotalCrates = 0;
             TotalTrucks = 0;
             TimeInUse = 0;
             TimeNotInUse = 0;
-            currentTruck = null;
         }
 
         /// <summary>
@@ -57,36 +52,15 @@ namespace WarehouseSim
         }
 
         /// <summary>
-        /// the method pulls a truck from the front of the line at a dock to be unloaded
+        /// the method pulls a truck from the front of the line at a dock
         /// </summary>
         /// <returns>returns the 1st truck</returns>
         public Truck SendOff()
         {
             // does this method also need to make sure the truck is fully unloaded before it dequeues the truck? that needs to be done somewhere
             // as each crate is unloaded, the value can be added to TotalSales, and unloading a crate adds one time unit to TimeInUse
-            this.currentTruck = Line.Dequeue();
-            return currentTruck;
+            return Line.Dequeue();
 
-        }
-
-        /// <summary>
-        /// shows whether a truck is currently being unloaded at a dock
-        /// </summary>
-        /// <returns>false if truck is empty or no truck at all; returns true otherwise</returns>
-        public bool Unloading()
-        {
-            if (currentTruck == null)
-            {
-                return false;
-            }
-            else if (currentTruck.Trailer.Peek() == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
         }
 
     }

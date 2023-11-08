@@ -56,7 +56,9 @@ namespace WarehouseSim
                 Random rand = new Random();
 
                 // check the entrance at the start of the time interval to see if there is a truck at the entrance waiting. if there is, send it to a dock line instead
-                if (Entrance.Peek() != null)
+                //if (Entrance.Peek() != null)
+
+                if (Entrance.Count > 0)
                 {
                     // adding the truck to a random dock right now, need to add where this searches for the dock with the lowest line for efficiency?
                     int dockSelection = rand.Next(0, docksAmount);
@@ -66,55 +68,44 @@ namespace WarehouseSim
                 // starting the simulation with a 50% chance each time interval to have a truck show up at the entrance.
                 // doing this after the entrance check since it says it will take 1 time interval to process trucks there
                 // later on can adjust this so that there is a bell curve of the trucks showing up with the middle of the day being the peak
-                if (rand.NextDouble() < 0.5)
+                if (ShouldTruckArrive(timeIntervals))
                 {
                     Truck truck = new Truck("Billy", "MotherTrucker");
                     Entrance.Enqueue(truck);
+                    // Update statistics for TotalTrucks
                 }
-                else
-                {
-                    // currently not doing anything at the Enterance if a truck does not spawn
-                }
-
 
                 // check each dock to see if there is a truck actively unloading. if not, move the line up if there is a truck in line
                 for (int i = 0; i < docksAmount; i++)
                 {
+                    Dock dock = Docks[i];
+
                     // checking the current truck to unload at the dock. If there is no current truck, then dequeue one and start unloading that one
-                    if (Docks[i].currentTruck == null && Docks[i].Line.Peek() != null)
+                    if (dock.currentTruck == null)
                     {
-                        Docks[i].SendOff();  //this will move the next truck up
+                        if (dock.Line.Count > 0)
+                        {
+                            dock.SendOff();  //this will move the next truck up
+                            // Update statistics for TimeInUse
+                        }
+                        // Update statistics for TimeNotInUse
                     }
-                    else if (Docks[i].Unloading())
+                    else
                     {
-                        //if still unloading do something here
+                        if (!dock.Unloading())
+                        {
+                            dock.currentTruck.Unload();
+                        }
 
                         //if it is still unloading, then logically would we need to do anything? besides just add the truck to the end of the line
                         //or send to another open dock if there are any? - mel
                     }
-                    else
-                    {
-
-                    }
 
                 }
-
-
-
-
-
-
-
 
                 // proceed to the next time interval
                 timeIntervals++;
             }
-
-
-
-
-
-
 
         }
 
@@ -140,6 +131,31 @@ namespace WarehouseSim
                 }
             }
             return dockCount;
+        }
+
+        /// <summary>
+        /// Allows for higher probability of trucks arriving closer to peak time.
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns>returns true if randomValue is less than probability</returns>
+        public bool ShouldTruckArrive(int time)
+        {
+            // Peak time for truck arrivals: 24 = noon
+            int peakTime = 24;
+
+            // Standard deviation for the bell curve
+            double standardDeviation = 8.0; // Adjust as needed.
+
+            // Calculate probability of a truck arriving at the given time increment
+            double probability = Math.Exp(time - Math.Pow(time - peakTime, 2) /
+                (2 * Math.Pow(standardDeviation, 2))) /
+                (standardDeviation * Math.Sqrt(2 * Math.PI));
+
+            // Generate random number between 0 and 1.
+            double randomvalue = new Random().NextDouble();
+
+            // If randomValue is less than probability, then a truck arrives.
+            return randomvalue < probability;
         }
 
 

@@ -18,12 +18,12 @@ namespace WarehouseSim
 
             warehouse.Run();
 
-            /* added this for testing just to see if the docks wer created correctly. can use for troubleshooting
-             * foreach (Dock dock in warehouse.Docks)
+            //added this for testing just to see if the docks were created correctly. can use for troubleshooting
+            foreach (Dock dock in warehouse.Docks)
             {
                 Console.WriteLine(dock.Id);
             }
-            */
+            
 
         }
     }

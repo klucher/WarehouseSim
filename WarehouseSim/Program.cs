@@ -18,7 +18,7 @@ namespace WarehouseSim
 
             warehouse.Run();
 
-            /* added this for testing just to see if the docks werw created correctly. can use for troubleshooting
+            /* added this for testing just to see if the docks wer created correctly. can use for troubleshooting
              * foreach (Dock dock in warehouse.Docks)
             {
                 Console.WriteLine(dock.Id);

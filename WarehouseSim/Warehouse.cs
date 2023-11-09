@@ -85,6 +85,7 @@ namespace WarehouseSim
 
 
             int docksAmount = DockCount();
+            // asks the user for the number of docks in the sim, then adds them to the list of docks
             for (int i = 0; i < docksAmount; i++)
             {
                 Docks.Add(new Dock());
@@ -107,7 +108,7 @@ namespace WarehouseSim
                     Console.WriteLine("Truck joined Dock #" + dockSelection);
                 }
 
-                // starting the simulation with a 50% chance each time interval to have a truck show up at the entrance.
+                // OUTDATED COMMENT starting the simulation with a 50% chance each time interval to have a truck show up at the entrance.
                 // doing this after the entrance check since it says it will take 1 time interval to process trucks there
                 // later on can adjust this so that there is a bell curve of the trucks showing up with the middle of the day being the peak
                 if (ShouldTruckArrive(timeIntervals))
@@ -119,6 +120,7 @@ namespace WarehouseSim
                     Console.WriteLine("Driver: " + truck.Driver + "\nCompany: " + truck.DeliveryCompany);
 
                     // Update statistics for TotalTrucks
+                    // NEEDS CODE HERE
                 }
 
                 // check each dock to see if there is a truck actively unloading. if not, move the line up if there is a truck in line
@@ -127,14 +129,14 @@ namespace WarehouseSim
                     Dock dock = Docks[i];
 
                     // checking the current truck to unload at the dock. If there is no current truck, then dequeue one and start unloading that one
-                    if (dock.currentTruck == null)
+                    if (dock.currentTruck == null || dock.currentTruck.RemainingCrates == 0)
                     {
                         if (dock.Line.Count > 0)
                         {
-                            dock.SendOff();  //this will move the next truck up
+                            dock.SendOff();  //this will move the next truck up to be the current truck of the dock
 
                             // debug
-                            Console.WriteLine("Moving next truck up.");
+                            Console.WriteLine("Moving next truck up to the dock to be unloaded.");
 
                             // Update statistics for TimeInUse
                             dock.TimeInUse++;
@@ -145,7 +147,7 @@ namespace WarehouseSim
                             dock.TimeNotInUse++;
 
                             // debug
-                            Console.WriteLine("No truck waiting.");
+                            Console.WriteLine("No truck waiting in line.");
                         }
                     }
                     else
@@ -155,9 +157,21 @@ namespace WarehouseSim
                             // debug
                             Console.WriteLine("Dock is now unloading.");
                             dock.currentTruck.Unload();
+                            //this should continue unloading once per time interval while the trailer is not empty
+                            dock.TotalSales += dock.currentTruck.PrevCrateValue;
+
+                        }
+                        else
+                        {
+                            // debug
+                            Console.WriteLine("Dock is still unloading.");
+                            dock.currentTruck.Unload();
+                            //this should continue unloading once per time interval while the trailer is not empty
+                            dock.TotalSales += dock.currentTruck.PrevCrateValue;
                         }
 
-                        dock.TotalSales += dock.currentTruck.TruckValue;
+                        //dock.TotalSales += dock.currentTruck.TruckValue; //this looks like it would overcount sales
+
 
                         // debug
                         Console.WriteLine("Adding current truck value to total sales.");

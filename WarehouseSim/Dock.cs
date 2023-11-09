@@ -9,6 +9,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace WarehouseSim
         public Queue<Truck> Line { get; set; }
         public double TotalSales { get; set; }
         public int TotalCrates { get; set; }
+
         public int TotalTrucks { get; set; }
         public int TimeInUse { get; set; }
         public int TimeNotInUse { get; set; }
@@ -79,8 +81,10 @@ namespace WarehouseSim
             {
                 return false;
             }
-            else if (currentTruck.Trailer.Peek() == null)
+            //else if (currentTruck.Trailer.Peek() == null )  //this was causing a crash when checking if the stack was == null?
+            else if (currentTruck.RemainingCrates == 0) 
             {
+                currentTruck = null; // when the remaining crates is zero we should have no current truck
                 return false;
             }
             else

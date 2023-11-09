@@ -20,6 +20,9 @@ namespace WarehouseSim
         public string Driver { get; set; }
         public string DeliveryCompany { get; set; }
         public int CrateCount { get; set; }
+        public int RemainingCrates { get; set; }
+
+        public double PrevCrateValue { get; set; }
         public double TruckValue { get; set; }
         public Stack<Crate> Trailer;
 
@@ -38,6 +41,7 @@ namespace WarehouseSim
             // currently having each truck start with a random number of crates between 5 and 15 
             Random rand = new Random();
             CrateCount = rand.Next(5, 16);
+            RemainingCrates = CrateCount;
             for (int i = 0; i < CrateCount; i++)
             {
                 Load(new Crate());
@@ -63,7 +67,9 @@ namespace WarehouseSim
             Crate crate = Trailer.Pop();
 
             // also accumulating the crate value while removing them from the truck
+            PrevCrateValue = crate.Price;
             TruckValue += crate.Price;
+            RemainingCrates--;
             return crate;
         }
     }

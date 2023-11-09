@@ -24,6 +24,7 @@ namespace WarehouseSim
         public int TotalCrates { get; set; }
 
         public int TotalTrucks { get; set; }
+        public int TrucksInLine {  get; set; }
         public int TimeInUse { get; set; }
         public int TimeNotInUse { get; set; }
 
@@ -42,6 +43,7 @@ namespace WarehouseSim
             TotalSales = 0;
             TotalCrates = 0;
             TotalTrucks = 0;
+            TrucksInLine = 0;
             TimeInUse = 0;
             TimeNotInUse = 0;
             currentTruck = null;
@@ -56,6 +58,7 @@ namespace WarehouseSim
             Line.Enqueue(truck);
             //TimeInUse++;  //does time need to be added when the truck joins the line? this time needs to be tracked somewhere
             TotalTrucks++;
+            TrucksInLine++;
         }
 
         /// <summary>
@@ -67,6 +70,7 @@ namespace WarehouseSim
             // does this method also need to make sure the truck is fully unloaded before it dequeues the truck? that needs to be done somewhere
             // as each crate is unloaded, the value can be added to TotalSales, and unloading a crate adds one time unit to TimeInUse
             this.currentTruck = Line.Dequeue();
+            TrucksInLine--;
             return currentTruck;
 
         }

@@ -105,7 +105,8 @@ namespace WarehouseSim
                     Docks[dockSelection].JoinLine(Entrance.Dequeue());
 
                     // Debug
-                    Console.WriteLine("Truck joined Dock #" + dockSelection);
+                    Console.WriteLine("Truck joined Dock #" + (dockSelection+1));
+                    Console.WriteLine($"There is {Docks[dockSelection].TrucksInLine} trucks in line at Dock #{dockSelection+1}");
                 }
 
                 // OUTDATED COMMENT starting the simulation with a 50% chance each time interval to have a truck show up at the entrance.
@@ -136,7 +137,7 @@ namespace WarehouseSim
                             dock.SendOff();  //this will move the next truck up to be the current truck of the dock
 
                             // debug
-                            Console.WriteLine("Moving next truck up to the dock to be unloaded.");
+                            Console.WriteLine($"Moving next truck up to the dock to be unloaded at dock {i+1}.");
 
                             // Update statistics for TimeInUse
                             dock.TimeInUse++;
@@ -147,7 +148,7 @@ namespace WarehouseSim
                             dock.TimeNotInUse++;
 
                             // debug
-                            Console.WriteLine("No truck waiting in line.");
+                            Console.WriteLine($"No truck waiting in line at dock {i+1}.");
                         }
                     }
                     else
@@ -155,7 +156,7 @@ namespace WarehouseSim
                         if (!dock.Unloading())
                         {
                             // debug
-                            Console.WriteLine("Dock is now unloading.");
+                            Console.WriteLine($"Dock {i+1} is now unloading.");
                             dock.currentTruck.Unload();
                             //this should continue unloading once per time interval while the trailer is not empty
                             dock.TotalSales += dock.currentTruck.PrevCrateValue;
@@ -164,7 +165,7 @@ namespace WarehouseSim
                         else
                         {
                             // debug
-                            Console.WriteLine("Dock is still unloading.");
+                            Console.WriteLine($"Dock {i + 1} is still unloading.");
                             dock.currentTruck.Unload();
                             //this should continue unloading once per time interval while the trailer is not empty
                             dock.TotalSales += dock.currentTruck.PrevCrateValue;
@@ -174,9 +175,9 @@ namespace WarehouseSim
 
 
                         // debug
-                        Console.WriteLine("Adding current truck value to total sales.");
-                        Console.WriteLine("Current truck value: " + dock.currentTruck.TruckValue);
-                        Console.WriteLine("Dock Total Sales: " + dock.TotalSales);
+                        Console.WriteLine($"Adding current truck value to total sales for dock {i+1}.");
+                        Console.WriteLine($"Current truck value: " + dock.currentTruck.TruckValue);
+                        Console.WriteLine($"Dock {i+1} Total Sales: " + dock.TotalSales);
 
                         //if it is still unloading, then logically would we need to do anything? besides just add the truck to the end of the line
                         //or send to another open dock if there are any? - mel

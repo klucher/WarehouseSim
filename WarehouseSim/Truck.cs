@@ -50,7 +50,7 @@ namespace WarehouseSim
         }
 
         /// <summary>
-        /// loads/adds a crate into a truck's crate stack
+        /// loads/adds a crate into a truck's crate stack front of the line
         /// </summary>
         /// <param name="crate">a crate being put into a truck</param>
         public void Load(Crate crate)
@@ -59,7 +59,7 @@ namespace WarehouseSim
         }
 
         /// <summary>
-        /// removes a crate from a truck's stack/trailer
+        /// removes a crate from a truck's stack/trailer -- LIFO
         /// </summary>
         /// <returns>the crate at the top of the stack</returns>
         public Crate Unload()

@@ -25,6 +25,7 @@ namespace WarehouseSim
 
         public int TotalTrucks { get; set; }
         public int TrucksInLine {  get; set; }
+        public int LongestLine {  get; set; }
         public int TimeInUse { get; set; }
         public int TimeNotInUse { get; set; }
 
@@ -44,6 +45,7 @@ namespace WarehouseSim
             TotalCrates = 0;
             TotalTrucks = 0;
             TrucksInLine = 0;
+            LongestLine = 0;
             TimeInUse = 0;
             TimeNotInUse = 0;
             currentTruck = null;
@@ -59,6 +61,12 @@ namespace WarehouseSim
             //TimeInUse++;  //does time need to be added when the truck joins the line? this time needs to be tracked somewhere
             TotalTrucks++;
             TrucksInLine++;
+
+            //this code will update the longest line throughout the day at the dock
+            if (TrucksInLine > LongestLine)
+            {
+                LongestLine = TrucksInLine;
+            }
         }
 
         /// <summary>

@@ -106,7 +106,7 @@ namespace WarehouseSim
 
                     // Debug
                     Console.WriteLine("Truck joined Dock #" + (dockSelection+1));
-                    Console.WriteLine($"There is {Docks[dockSelection].TrucksInLine} trucks in line at Dock #{dockSelection+1}");
+                    Console.WriteLine($"There is {Docks[dockSelection].TrucksInLine} trucks in line at Dock #{dockSelection+1}. The longest line has been {Docks[dockSelection].LongestLine}.");
                 }
 
                 // OUTDATED COMMENT starting the simulation with a 50% chance each time interval to have a truck show up at the entrance.

@@ -24,6 +24,41 @@ namespace WarehouseSim
 
         private string TablePath {  get; set; }
 
+
+        // Tyler - I think you would need to add a constructor for the object and then you could access it from other classes when it is created?
+        public CSV()
+        {
+            TablePath = FilePathSet();
+        }
+
+        /// <summary>
+        /// Asks a user for a file name. Then converts that string into a relative file path that can be used for saving the file
+        /// </summary>
+        /// <returns></returns>
+        public string FilePathSet()
+        {
+            string fileName = string.Empty;
+            bool goodEntry = false;
+            while (!goodEntry && fileName != null && fileName != string.Empty)
+            {
+                try
+                {
+                    Console.WriteLine("What would you like to name your csv file?");
+                    fileName = Console.ReadLine();
+                    goodEntry = true;
+                }
+                catch
+                {
+                    Console.WriteLine("Error, please enter a whole number.");
+                }
+            }
+
+            TablePath = @"..\\CSV\\" + fileName + @".csv";
+
+            return TablePath;
+        }
+
+
         /// <summary>
         /// creates a table with parameters for each crate
         /// </summary>

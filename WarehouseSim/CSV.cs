@@ -10,19 +10,6 @@ namespace WarehouseSim
 {
     internal class CSV
     {
-        //tasks to do
-        //create a method that returns a csv file
-        //create a time increment variable that starts at 0 and ends at the end of the day (should be 47)
-        //in crate unload method, need to check the time increment variable
-        //In crate unload method (or somewhere like that, there needs to be a string that is returned if a crate is unloaded:
-        //crate unloaded, but there are still more trucks to unload
-        //crate unloaded, truck is empty AND another truck is in the dock
-        //crate unloaded, truck is empty AND there is NOT another truck in the dock
-
-        //potentially need to eventually create new method that opens new docks as it gets closer to noon and closes docks as it gets further away
-
-
-
         //csv file to be created:
         //needs to return:  
         //time incrememnt of crate being unloaded
@@ -35,12 +22,15 @@ namespace WarehouseSim
         //crate unloaded, truck is empty and no other trucks in line
         //crate unloaded, truck empty and another truck is in line
 
+        private string TablePath {  get; set; }
+
         /// <summary>
         /// creates a table with parameters for each crate
         /// </summary>
-        /// <returns>csv table</returns>
+        /// <returns>table</returns>
         public static DataTable CreateDataTable()
         {
+            
             DataTable table = new DataTable();
             table.Columns.Add("Time Unloaded", typeof(string));
             table.Columns.Add("Driver's name", typeof(string));
@@ -50,7 +40,12 @@ namespace WarehouseSim
             table.Columns.Add("Scenario", typeof(string));
 
             //not quite sure how to do this yet? maybe a foreach loop?
-            table.Rows.Add();
+            foreach(string s in table.Columns)
+            {
+                //need to make s equal all the 
+                table.Rows.Add(s);
+            }
+            
 
             return table;
 
@@ -59,12 +54,17 @@ namespace WarehouseSim
 
         }
 
-        /*public string CreateCSV()
+        public string CreateCSV()
         {
-            StringBuilder sb = new StringBuilder();
-            //sb
+            var sb = new StringBuilder();
 
-        }*/
+            //need to somehow put the stringbuilder to create a csv file path
+            //and pull in the data from createDataTable?
+            CreateDataTable();
+
+            return sb.ToString();
+        }
+
 
     }
 }

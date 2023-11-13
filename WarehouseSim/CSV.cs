@@ -15,6 +15,10 @@ namespace WarehouseSim
 
 
         // Tyler - I think you would need to add a constructor for the object and then you could access it from other classes when it is created?
+        
+        /// <summary>
+        /// calls other methods to create a csv file
+        /// </summary>
         public CSV()
         {
             TablePath = SetFilePath();
@@ -24,7 +28,7 @@ namespace WarehouseSim
         /// <summary>
         /// Asks a user for a file name. Then converts that string into a relative file path that can be used for saving the file
         /// </summary>
-        /// <returns></returns>
+        /// <returns>file path for the table</returns>
         public string SetFilePath()
         {
             string fileName = string.Empty;
@@ -67,6 +71,12 @@ namespace WarehouseSim
             return table;
         }
 
+        /// <summary>
+        /// adds the sub-info of each crate, dock, and truck at a particular point in time
+        /// </summary>
+        /// <param name="crate">the crate</param>
+        /// <param name="truck">the truck</param>
+        /// <param name="dock">the dock</param>
         public void AddRow(Crate crate, Truck truck, Dock dock)
         {
             Table.Rows.Add(
@@ -82,10 +92,16 @@ namespace WarehouseSim
                 );
         }
 
+        /// <summary>
+        /// creates the backbone of a CSV file which is composed of column names and data entries
+        /// </summary>
+        /// <param name="table">a table of column names and row data</param>
+        /// <returns>completed table</returns>
         public string CreateCSV(DataTable table)
         {
             var sb = new StringBuilder();
 
+            //joining the columns into a comma separated list
             sb.AppendLine(string.Join(",", table.Columns.Cast<DataColumn>().Select(c => c.ColumnName)));
 
             foreach (DataRow row in table.Rows)
@@ -96,6 +112,9 @@ namespace WarehouseSim
             return sb.ToString();
         }
 
+        /// <summary>
+        /// all the data content that is turned into a table is returned as a file
+        /// </summary>
         public void WriteToFile()
         {
             string csvContent = CreateCSV(Table);

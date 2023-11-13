@@ -23,13 +23,11 @@ namespace WarehouseSim
         public Queue<Truck> Line { get; set; }
         public double TotalSales { get; set; }
         public int TotalCrates { get; set; }
-
         public int TotalTrucks { get; set; }
         public int TrucksInLine {  get; set; }
         public int LongestLine {  get; set; }
         public int TimeInUse { get; set; }
         public int TimeNotInUse { get; set; }
-
         public Truck currentTruck { get; set; }
 
         private static int id = 0000001;

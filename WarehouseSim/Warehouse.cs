@@ -20,7 +20,6 @@ namespace WarehouseSim
     {
         public List<Dock> Docks { get; set; }
         public Queue<Truck> Entrance { get; set; }
-
         public int timeIntervals { get; set; }
 
         /// <summary>
@@ -33,6 +32,10 @@ namespace WarehouseSim
             timeIntervals = 1;  //starting this at 1 for now instead of 0 because we will be using the time intervals for math equations later
         }
 
+        /// <summary>
+        /// adds each docks sales to a total score
+        /// </summary>
+        /// <returns>total sales of all docks</returns>
         public double GetTotalSales()
         {
             double totalSales = 0;
@@ -43,6 +46,10 @@ namespace WarehouseSim
             return totalSales;
         }
 
+        /// <summary>
+        /// adds the number of crates unloaded for each dock to a total score
+        /// </summary>
+        /// <returns>total crates unloaded for all docks</returns>
         public double GetTotalCreatesUnloaded()
         {
             int totalCrates = 0;
@@ -52,6 +59,11 @@ namespace WarehouseSim
             }
             return totalCrates;
         }
+
+        /// <summary>
+        /// adds the time in use of each dock to a total score of all docks
+        /// </summary>
+        /// <returns>time in use for all docks together</returns>
         public int GetTotalTimeInUse()
         {
             int totalTimeInUse = 0;
@@ -61,6 +73,11 @@ namespace WarehouseSim
             }
             return totalTimeInUse;
         }
+
+        /// <summary>
+        /// adds the time not in use of each dock to a total score of all docks
+        /// </summary>
+        /// <returns>total time not in use for all docks added together</returns>
         public double GetTotalTimeNotInUse()
         {
             int totalTimeNotInUse = 0;
@@ -72,18 +89,10 @@ namespace WarehouseSim
         }
 
         /// <summary>
-        /// runs the whole scenario for the warehouse
+        /// runs the whole scenario for the warehouse, adds docks, starts the time count, etc
         /// </summary>
         public void Run()
         {
-            //this is probably where we could start creating the new trucks and adding them to the Dock line etc. or calling other methods from here to do that
-
-            //need a while loop for trucks to appear, need to create a random number generator
-            //using NextDouble() then compare that to predetermined percentages based on what time of day it is
-            //use bell curve for the chance of a truck to show up. If it is less than 24 increments, then divide the current increment by 24
-            //if it is over 24, divide that number minus 24 by 24
-
-
             int docksAmount = DockCount();
             // asks the user for the number of docks in the sim, then adds them to the list of docks
             for (int i = 0; i < docksAmount; i++)
@@ -178,22 +187,15 @@ namespace WarehouseSim
                         Console.WriteLine($"Adding current truck value to total sales for dock {i+1}.");
                         Console.WriteLine($"Current truck value: " + dock.currentTruck.TruckValue);
                         Console.WriteLine($"Dock {i+1} Total Sales: " + dock.TotalSales);
-
-                        //if it is still unloading, then logically would we need to do anything? besides just add the truck to the end of the line
-                        //or send to another open dock if there are any? - mel
                     }
-
                 }
-
                 // proceed to the next time interval
                 timeIntervals++;
 
                 // debug
                 Console.WriteLine("Proceding to next time interval: " + timeIntervals);
             }
-
         }
-
         /// <summary>
         /// allows user to input number of docks in a warehouse
         /// </summary>
@@ -221,7 +223,7 @@ namespace WarehouseSim
         /// <summary>
         /// Allows for higher probability of trucks arriving closer to peak time.
         /// </summary>
-        /// <param name="time"></param>
+        /// <param name="time">the current time in the simulation</param>
         /// <returns>returns true if randomValue is less than probability</returns>
         public bool ShouldTruckArrive(int time)
         {
@@ -247,10 +249,6 @@ namespace WarehouseSim
             return randomvalue < probability;
         }
 
-
-        //create a method that returns a csv file
-        //create a time increment variable that starts at 0 and ends at the end of the day (should be 47)
-        //in crate unload method, need to check the time increment variable
         //In crate unload method (or somewhere like that, there needs to be a string that is returned if a crate is unloaded:
         //crate unloaded, but there are still more trucks to unload
         //crate unloaded, truck is empty AND another truck is in the dock

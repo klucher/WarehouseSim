@@ -17,7 +17,7 @@ namespace WarehouseSim
         // Tyler - I think you would need to add a constructor for the object and then you could access it from other classes when it is created?
         
         /// <summary>
-        /// calls other methods to create a csv file
+        /// calls other methods to create a csv file by setting the file path and creating a data table
         /// </summary>
         public CSV()
         {

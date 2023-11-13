@@ -22,6 +22,8 @@ namespace WarehouseSim
         public int CrateCount { get; set; }
         public int RemainingCrates { get; set; }
 
+        public Crate CurrentCrate { get; set; }
+
         public double PrevCrateValue { get; set; }
         public double TruckValue { get; set; }
         public Stack<Crate> Trailer;
@@ -65,6 +67,9 @@ namespace WarehouseSim
         public Crate Unload()
         {
             Crate crate = Trailer.Pop();
+            
+            // adding this currentcrate variable so that it can be accessed for the csv writing
+            CurrentCrate = crate;
 
             // also accumulating the crate value while removing them from the truck
             PrevCrateValue = crate.Price;

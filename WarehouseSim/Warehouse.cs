@@ -190,9 +190,11 @@ namespace WarehouseSim
                             //this should continue unloading once per time interval while the trailer is not empty
                             dock.TotalSales += dock.currentTruck.PrevCrateValue;
                         }
+                        //broken for now, just need new variable in the above section somehow
+                        //CSV.AddRow(dock.currentTruck.crate, dock.currentTruck, dock);
+
 
                         //dock.TotalSales += dock.currentTruck.TruckValue; //this looks like it would overcount sales
-
 
                         // debug
                         Console.WriteLine($"Adding current truck value to total sales for dock {i+1}.");

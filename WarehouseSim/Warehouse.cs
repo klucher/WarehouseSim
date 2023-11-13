@@ -150,7 +150,7 @@ namespace WarehouseSim
                     Dock dock = Docks[i];
 
                     // checking the current truck to unload at the dock. If there is no current truck, then dequeue one and start unloading that one
-                    if (dock.currentTruck == null || dock.currentTruck.RemainingCrates == 0)
+                    if (dock.CurrentTruck == null || dock.CurrentTruck.RemainingCrates == 0)
                     {
                         if (dock.Line.Count > 0)
                         {
@@ -177,28 +177,32 @@ namespace WarehouseSim
                         {
                             // debug
                             Console.WriteLine($"Dock {i+1} is now unloading.");
-                            dock.currentTruck.Unload();
+                            dock.CurrentTruck.Unload();
                             //this should continue unloading once per time interval while the trailer is not empty
-                            dock.TotalSales += dock.currentTruck.PrevCrateValue;
+                            dock.TotalSales += dock.CurrentTruck.PrevCrateValue;
 
                         }
                         else
                         {
                             // debug
                             Console.WriteLine($"Dock {i + 1} is still unloading.");
-                            dock.currentTruck.Unload();
+                            dock.CurrentTruck.Unload();
                             //this should continue unloading once per time interval while the trailer is not empty
-                            dock.TotalSales += dock.currentTruck.PrevCrateValue;
+                            dock.TotalSales += dock.CurrentTruck.PrevCrateValue;
                         }
                         //broken for now, just need new variable in the above section somehow
-                        //CSV.AddRow(dock.currentTruck.crate, dock.currentTruck, dock);
+
+                        // Tyler- created the CSV class object here and used the AddRow method with the new CurrentCrate variable
+                        CSV fileCSV = new CSV();
+
+                        fileCSV.AddRow(dock.CurrentTruck.CurrentCrate, dock.CurrentTruck, dock);
 
 
                         //dock.TotalSales += dock.currentTruck.TruckValue; //this looks like it would overcount sales
 
                         // debug
                         Console.WriteLine($"Adding current truck value to total sales for dock {i+1}.");
-                        Console.WriteLine($"Current truck value: " + dock.currentTruck.TruckValue);
+                        Console.WriteLine($"Current truck value: " + dock.CurrentTruck.TruckValue);
                         Console.WriteLine($"Dock {i+1} Total Sales: " + dock.TotalSales);
                     }
                 }

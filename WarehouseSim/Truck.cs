@@ -40,6 +40,7 @@ namespace WarehouseSim
             this.DeliveryCompany = deliveryCompany;
             Trailer = new Stack<Crate>();
             TruckValue = 0;
+            CurrentCrate = null;
 
             // currently having each truck start with a random number of crates between 5 and 15 
             Random rand = new Random();
@@ -47,7 +48,9 @@ namespace WarehouseSim
             RemainingCrates = CrateCount;
             for (int i = 0; i < CrateCount; i++)
             {
-                Load(new Crate());
+                Crate newCrate = new Crate();
+                Load(newCrate);
+                CurrentCrate = newCrate;
             }
 
         }

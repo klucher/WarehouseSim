@@ -28,7 +28,7 @@ namespace WarehouseSim
         public int LongestLine {  get; set; }
         public int TimeInUse { get; set; }
         public int TimeNotInUse { get; set; }
-        public Truck currentTruck { get; set; }
+        public Truck CurrentTruck { get; set; }
 
         private static int id = 0000001;
 
@@ -47,7 +47,7 @@ namespace WarehouseSim
             LongestLine = 0;
             TimeInUse = 0;
             TimeNotInUse = 0;
-            currentTruck = null;
+            CurrentTruck = null;
         }
 
         /// <summary>
@@ -76,11 +76,11 @@ namespace WarehouseSim
         {
             // does this method also need to make sure the truck is fully unloaded before it dequeues the truck? that needs to be done somewhere
             // as each crate is unloaded, the value can be added to TotalSales, and unloading a crate adds one time unit to TimeInUse
-            this.currentTruck = Line.Dequeue();
+            this.CurrentTruck = Line.Dequeue();
             TrucksInLine--;
             // the below line adds the truck that is being unloadeds crate count to the overall dock crate count
-            TotalCrates += currentTruck.CrateCount;
-            return currentTruck;
+            TotalCrates += CurrentTruck.CrateCount;
+            return CurrentTruck;
 
         }
 
@@ -90,14 +90,14 @@ namespace WarehouseSim
         /// <returns>false if truck is empty or no truck at all; returns true otherwise</returns>
         public bool Unloading()
         {
-            if (currentTruck == null)
+            if (CurrentTruck == null)
             {
                 return false;
             }
             //else if (currentTruck.Trailer.Peek() == null )  //this was causing a crash when checking if the stack was == null?
-            else if (currentTruck.RemainingCrates == 0) 
+            else if (CurrentTruck.RemainingCrates == 0) 
             {
-                currentTruck = null; // when the remaining crates is zero we should have no current truck
+                CurrentTruck = null; // when the remaining crates is zero we should have no current truck
                 return false;
             }
             else

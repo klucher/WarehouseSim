@@ -26,6 +26,7 @@ namespace WarehouseSim
 
         public double PrevCrateValue { get; set; }
         public double TruckValue { get; set; }
+
         public Stack<Crate> Trailer;
 
         /// <summary>

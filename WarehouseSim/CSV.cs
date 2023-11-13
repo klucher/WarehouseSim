@@ -10,36 +10,31 @@ namespace WarehouseSim
 {
     internal class CSV
     {
-        //csv file to be created:
-        //needs to return:  
-        //time incrememnt of crate being unloaded
-        //truck driver's name
-        //delivery company name
-        //crate's id number
-        //crate's value
-        //a string for one 3 scenarios depending on what happened
-        //crate unloaded with truck still having more crates
-        //crate unloaded, truck is empty and no other trucks in line
-        //crate unloaded, truck empty and another truck is in line
-
         private string TablePath {  get; set; }
+        private DataTable Table { get; set; }
 
 
         // Tyler - I think you would need to add a constructor for the object and then you could access it from other classes when it is created?
+        
+        /// <summary>
+        /// calls other methods to create a csv file
+        /// </summary>
         public CSV()
         {
-            TablePath = FilePathSet();
+            TablePath = SetFilePath();
+            Table = CreateDataTable();
         }
 
         /// <summary>
         /// Asks a user for a file name. Then converts that string into a relative file path that can be used for saving the file
         /// </summary>
-        /// <returns></returns>
-        public string FilePathSet()
+        /// <returns>file path for the table</returns>
+        public string SetFilePath()
         {
             string fileName = string.Empty;
             bool goodEntry = false;
-            while (!goodEntry && fileName != null && fileName != string.Empty)
+
+            while (!goodEntry || string.IsNullOrEmpty(fileName))
             {
                 try
                 {
@@ -49,12 +44,11 @@ namespace WarehouseSim
                 }
                 catch
                 {
-                    Console.WriteLine("Error, please enter a whole number.");
+                    Console.WriteLine("Error, please enter a valid file name.");
                 }
             }
 
-            TablePath = @"..\\CSV\\" + fileName + @".csv";
-
+            TablePath = Path.Combine("..\\CSV\\", $"{fileName}.csv");
             return TablePath;
         }
 
@@ -74,32 +68,57 @@ namespace WarehouseSim
             table.Columns.Add("Crate's Value", typeof(int));
             table.Columns.Add("Scenario", typeof(string));
 
-            //not quite sure how to do this yet? maybe a foreach loop?
-            foreach(string s in table.Columns)
-            {
-                //need to make s equal all the 
-                table.Rows.Add(s);
-            }
-            
-
             return table;
-
-            //or do something with this?
-
-
         }
 
-        public string CreateCSV()
+        /// <summary>
+        /// adds the sub-info of each crate, dock, and truck at a particular point in time
+        /// </summary>
+        /// <param name="crate">the crate</param>
+        /// <param name="truck">the truck</param>
+        /// <param name="dock">the dock</param>
+        public void AddRow(Crate crate, Truck truck, Dock dock)
+        {
+            Table.Rows.Add(
+                dock.TimeInUse,         //time incrememnt of crate being unloaded
+                truck.Driver,           //truck driver's name
+                truck.DeliveryCompany,  //delivery company name
+                crate.Id,               //crate's id number
+                crate.Price,            //crate's value
+                string.Empty            //a string for one 3 scenarios depending on what happened:
+                                        //crate unloaded with truck still having more crates
+                                        //crate unloaded, truck is empty and no other trucks in line
+                                        //crate unloaded, truck empty and another truck is in line
+                );
+        }
+
+        /// <summary>
+        /// creates the backbone of a CSV file which is composed of column names and data entries
+        /// </summary>
+        /// <param name="table">a table of column names and row data</param>
+        /// <returns>completed table</returns>
+        public string CreateCSV(DataTable table)
         {
             var sb = new StringBuilder();
 
-            //need to somehow put the stringbuilder to create a csv file path
-            //and pull in the data from createDataTable?
-            CreateDataTable();
+            //joining the columns into a comma separated list
+            sb.AppendLine(string.Join(",", table.Columns.Cast<DataColumn>().Select(c => c.ColumnName)));
+
+            foreach (DataRow row in table.Rows)
+            {
+                sb.AppendLine(string.Join(",", row.ItemArray));
+            }
 
             return sb.ToString();
         }
 
-
+        /// <summary>
+        /// all the data content that is turned into a table is returned as a file
+        /// </summary>
+        public void WriteToFile()
+        {
+            string csvContent = CreateCSV(Table);
+            File.WriteAllText(TablePath, csvContent);
+        }
     }
 }

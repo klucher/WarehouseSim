@@ -7,12 +7,24 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+using System.Data;
+
 namespace WarehouseSim
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+            // Just for testing
+            Truck truck = new Truck("John Does", "ABC Delivery");
+            Crate crate = new Crate();
+            Dock dock = new Dock();
+
+            CSV csv = new CSV();
+
+            csv.AddRow(crate, truck, dock);
+
+
 
             Warehouse warehouse = new Warehouse();
 

@@ -91,7 +91,7 @@ namespace WarehouseSim
                 Docks.Add(new Dock());
             }
 
-            while (timeIntervals < 48)
+            while (timeIntervals <= 48)
             {
                 Random rand = new Random();
 

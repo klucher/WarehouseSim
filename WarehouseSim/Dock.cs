@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,6 +80,8 @@ namespace WarehouseSim
             // as each crate is unloaded, the value can be added to TotalSales, and unloading a crate adds one time unit to TimeInUse
             this.currentTruck = Line.Dequeue();
             TrucksInLine--;
+            // the below line adds the truck that is being unloadeds crate count to the overall dock crate count
+            TotalCrates += currentTruck.CrateCount;
             return currentTruck;
 
         }

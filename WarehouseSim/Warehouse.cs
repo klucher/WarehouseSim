@@ -22,6 +22,12 @@ namespace WarehouseSim
         public Queue<Truck> Entrance { get; set; }
         public int timeIntervals { get; set; }
 
+        List<string> driverNames = new List<string>()
+        {"Buddy", "Dude", "Elf", "DukeNukem", "Grinch", "Thomas", "Rando", "Frankfurter", "Billy", "Bob"};
+
+        List<string> companyNames = new()
+        {"AmazonTM", "MotherTrucker", "Ebay", "Diwali", "December", "November", "PlutoIsAPlant", "FreeWilly", "Pringles", "AlienWare"};
+
         /// <summary>
         /// generate empty warehouse at beginning of day
         /// </summary>
@@ -123,7 +129,12 @@ namespace WarehouseSim
                 // later on can adjust this so that there is a bell curve of the trucks showing up with the middle of the day being the peak
                 if (ShouldTruckArrive(timeIntervals))
                 {
-                    Truck truck = new Truck("Billy", "MotherTrucker");
+                    //get index of driver and company names lists
+                    int driver = rand.Next(driverNames.Count);
+                    int company = rand.Next(companyNames.Count);
+
+                    //Truck truck = new Truck("Billy", "MotherTrucker");
+                    Truck truck = new Truck(driverNames[driver], companyNames[company]);
                     Entrance.Enqueue(truck);
 
                     //Debug

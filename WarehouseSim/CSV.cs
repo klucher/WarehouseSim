@@ -120,8 +120,8 @@ namespace WarehouseSim
                 crate.Price,                        //crate's value
                 scene                               //a string for one 3 scenarios depending on what happened:
                                                     //crate unloaded with truck still having more crates
-                                                    //crate unloaded, truck is empty and no other trucks in line
-                                                    //crate unloaded, truck empty and another truck is in line
+                                                    //crate unloaded, truck is empty and other trucks in line
+                                                    //crate unloaded, truck empty and no nother truck is in line
                 );
         }
 

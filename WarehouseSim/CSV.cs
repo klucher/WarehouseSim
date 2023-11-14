@@ -91,7 +91,7 @@ namespace WarehouseSim
         /// <param name="dock">the dock</param>
         public void AddRow(Crate crate, Truck truck, Dock dock)
         {
-            string scene = "0";
+            string scene = string.Empty;
             if(truck.CrateCount != 0)
             {
                 scene = "A crate was unloaded but the truck still has more crates to unload";
@@ -111,7 +111,7 @@ namespace WarehouseSim
                 truck.DeliveryCompany,              //delivery company name
                 crate.Id,                           //crate's id number
                 crate.Price,                        //crate's value
-                string.Empty                        //a string for one 3 scenarios depending on what happened:
+                scene                               //a string for one 3 scenarios depending on what happened:
                                                     //crate unloaded with truck still having more crates
                                                     //crate unloaded, truck is empty and no other trucks in line
                                                     //crate unloaded, truck empty and another truck is in line

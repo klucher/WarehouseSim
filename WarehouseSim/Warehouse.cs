@@ -179,6 +179,7 @@ namespace WarehouseSim
                             // debug
                             Console.WriteLine($"Dock {i+1} is now unloading.");
                             dock.CurrentTruck.Unload();
+                            dock.TimeInUse++;  //testing this, need to add time somewhere for this
                             //this should continue unloading once per time interval while the trailer is not empty
                             dock.TotalSales += dock.CurrentTruck.PrevCrateValue;
 
@@ -188,6 +189,7 @@ namespace WarehouseSim
                             // debug
                             Console.WriteLine($"Dock {i + 1} is still unloading.");
                             dock.CurrentTruck.Unload();
+                            dock.TimeInUse++;  //testing this, need to add time somewhere for this
                             //this should continue unloading once per time interval while the trailer is not empty
                             dock.TotalSales += dock.CurrentTruck.PrevCrateValue;
                             if (timeIntervals == 48)

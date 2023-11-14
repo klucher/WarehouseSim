@@ -98,6 +98,67 @@ namespace WarehouseSim
         }
 
         /// <summary>
+        /// Calculates the lowest line in any of the docks and returns the dock number
+        /// </summary>
+        /// <returns></returns>
+        public int GetLowestDockLine()
+        {
+            int lowestDockLine = Docks[0].TrucksInLine;
+            int shortestDockIndex = 0; ;
+            int shortestDockIndexAndNotLoading = -1;
+            for (int i = 0; i < Docks.Count; i++)
+            {
+                /*//selects the lowest line that is not actively unloading
+                if (Docks[i].TrucksInLine < lowestDockLine && !Docks[i].Unloading())
+                {
+                    lowestDockLine = Docks[i].TrucksInLine;
+                    shortestDockIndex = i;
+                }
+                //if all are unloading, selects the shortest line
+                else if (Docks[i].TrucksInLine < lowestDockLine)
+                {
+                    lowestDockLine = Docks[i].TrucksInLine;
+                    shortestDockIndex = i;
+                }
+                else
+                {
+                    Console.WriteLine("Something went wrong here.");
+                }*/
+
+                //selects the lowest line that is not actively unloading
+                if (!Docks[i].Unloading())
+                {
+                    lowestDockLine = Docks[i].TrucksInLine;
+                    shortestDockIndex = i;
+                    shortestDockIndexAndNotLoading = i;
+                }
+                //if all are unloading, selects the shortest line
+                else
+                {
+                    if (Docks[i].TrucksInLine < lowestDockLine)
+                    {
+                        lowestDockLine = Docks[i].TrucksInLine;
+                        shortestDockIndex = i;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Something went wrong here.");
+                    }
+                }
+
+            }
+
+            if (shortestDockIndexAndNotLoading < shortestDockIndex && shortestDockIndexAndNotLoading != -1)
+            {
+                shortestDockIndex = shortestDockIndexAndNotLoading;
+            }
+
+            return shortestDockIndex;
+        }
+
+
+
+        /// <summary>
         /// runs the whole scenario for the warehouse, adds docks, starts the time count, etc
         /// </summary>
         public void Run()
@@ -121,7 +182,8 @@ namespace WarehouseSim
                 if (Entrance.Count > 0)
                 {
                     // adding the truck to a random dock right now, need to add where this searches for the dock with the lowest line for efficiency?
-                    int dockSelection = rand.Next(0, DocksAmount);
+                    //int dockSelection = rand.Next(0, DocksAmount);
+                    int dockSelection = GetLowestDockLine();
                     Docks[dockSelection].JoinLine(Entrance.Dequeue());
 
                     // Debug

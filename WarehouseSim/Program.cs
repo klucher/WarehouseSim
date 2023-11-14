@@ -38,7 +38,7 @@ namespace WarehouseSim
             Console.WriteLine($"The total number of trucks processed through a dock was {TotTrucksProcessed}.");
             Console.WriteLine($"The total number of trucks that passed through the gate was {warehouse.TotTrucksSpawned}.");
             Console.WriteLine("Total of Crates Unloaded was " + warehouse.GetTotalCreatesUnloaded() + ".");
-            Console.WriteLine("Total Value of Crates unloaded was $" + warehouse.GetTotalSales() + ".");
+            Console.WriteLine("Total Value of Crates unloaded was $" + Math.Round(warehouse.GetTotalSales(), 2) + ".");
             Console.WriteLine($"The Average Value of each crate unloaded was ${Math.Round(warehouse.GetTotalSales() / warehouse.GetTotalCreatesUnloaded(), 2)}.");
             Console.WriteLine($"The Average Value of each truck processed was ${Math.Round(warehouse.GetTotalSales() / TotTrucksProcessed, 2)}.");
             for (int i = 0; i < warehouse.Docks.Count; i++)
@@ -48,7 +48,7 @@ namespace WarehouseSim
             }
             Console.WriteLine($"The average amount of time a dock was in use is {warehouse.GetTotalTimeInUse() / warehouse.DocksAmount} time increments.");
             Console.WriteLine($"The total operating cost for {warehouse.DocksAmount} dock(s) is ${48 * 100 * warehouse.DocksAmount}.");
-            Console.WriteLine($"Total profits are ${warehouse.GetTotalSales() - (48 * 100 * warehouse.DocksAmount)}.");
+            Console.WriteLine($"Total profits are ${Math.Round(warehouse.GetTotalSales() - (48 * 100 * warehouse.DocksAmount), 2)}.");
 
         }
     }

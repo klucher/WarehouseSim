@@ -13,9 +13,8 @@ namespace WarehouseSim
         private string TablePath {  get; set; }
         private DataTable Table { get; set; }
 
-
         // Tyler - I think you would need to add a constructor for the object and then you could access it from other classes when it is created?
-        
+
         /// <summary>
         /// calls other methods to create a csv file by setting the file path and creating a data table
         /// </summary>
@@ -79,13 +78,27 @@ namespace WarehouseSim
         /// <param name="dock">the dock</param>
         public void AddRow(Crate crate, Truck truck, Dock dock)
         {
+            string scene = "0";
+            if(truck.CrateCount != 0)
+            {
+                scene = "A crate was unloaded but the truck still has more crates to unload";
+            }
+            if(truck.CrateCount == 0 && dock.TrucksInLine == 0)
+            {
+                scene = "A crate was unloaded and the truck has no more crates to unload and another truck is already in the Dock";
+            }
+            if(truck.CrateCount == 0 && dock.TrucksInLine != 0)
+            {
+                scene = "A crate was unloaded and the truck has no more crates to unload but another truck is NOT already in the Dock";
+            }
+
             Table.Rows.Add(
                 dock.TimeInUse,         //time incrememnt of crate being unloaded
                 truck.Driver,           //truck driver's name
                 truck.DeliveryCompany,  //delivery company name
                 crate.Id,               //crate's id number
                 crate.Price,            //crate's value
-                string.Empty            //a string for one 3 scenarios depending on what happened:
+                scene.ToString()            //a string for one 3 scenarios depending on what happened:
                                         //crate unloaded with truck still having more crates
                                         //crate unloaded, truck is empty and no other trucks in line
                                         //crate unloaded, truck empty and another truck is in line

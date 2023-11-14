@@ -22,6 +22,10 @@ namespace WarehouseSim
         public Queue<Truck> Entrance { get; set; }
         public int timeIntervals { get; set; }
 
+        public int TotTrucksSpawned { get; set; }
+
+        public int DocksAmount { get; set; }
+
         List<string> driverNames = new List<string>()
         {"Buddy", "Dude", "Elf", "DukeNukem", "Grinch", "Thomas", "Rando", "Frankfurter", "Billy", "Bob"};
         List<string> companyNames = new()
@@ -100,9 +104,9 @@ namespace WarehouseSim
         {
             CSV fileCSV = new CSV(this);
 
-            int docksAmount = DockCount();
+            DocksAmount = DockCount();
             // asks the user for the number of docks in the sim, then adds them to the list of docks
-            for (int i = 0; i < docksAmount; i++)
+            for (int i = 0; i < DocksAmount; i++)
             {
                 Docks.Add(new Dock());
             }
@@ -117,7 +121,7 @@ namespace WarehouseSim
                 if (Entrance.Count > 0)
                 {
                     // adding the truck to a random dock right now, need to add where this searches for the dock with the lowest line for efficiency?
-                    int dockSelection = rand.Next(0, docksAmount);
+                    int dockSelection = rand.Next(0, DocksAmount);
                     Docks[dockSelection].JoinLine(Entrance.Dequeue());
 
                     // Debug
@@ -137,6 +141,9 @@ namespace WarehouseSim
                     //Truck truck = new Truck("Billy", "MotherTrucker");
                     Truck truck = new Truck(driverNames[driver], companyNames[company]);
                     Entrance.Enqueue(truck);
+                    TotTrucksSpawned++;
+                    // Tyler - added this new variable to count how many trucks were created to compare to how many made it through the docks
+
 
                     //Debug
                     Console.WriteLine("Driver: " + truck.Driver + "\nCompany: " + truck.DeliveryCompany);
@@ -146,7 +153,7 @@ namespace WarehouseSim
                 }
 
                 // check each dock to see if there is a truck actively unloading. if not, move the line up if there is a truck in line
-                for (int i = 0; i < docksAmount; i++)
+                for (int i = 0; i < DocksAmount; i++)
                 {
                     Dock dock = Docks[i];
 

@@ -23,7 +23,7 @@ namespace WarehouseSim
         public Queue<Truck> Line { get; set; }
         public double TotalSales { get; set; }
         public int TotalCrates { get; set; }
-        public int TotalTrucks { get; set; }
+        public int TotalTrucksProcessed { get; set; }
         public int TrucksInLine {  get; set; }
         public int LongestLine {  get; set; }
         public int TimeInUse { get; set; }
@@ -42,7 +42,7 @@ namespace WarehouseSim
             Line = new Queue<Truck>();
             TotalSales = 0;
             TotalCrates = 0;
-            TotalTrucks = 0;
+            TotalTrucksProcessed = 0;
             TrucksInLine = 0;
             LongestLine = 0;
             TimeInUse = 0;
@@ -58,7 +58,6 @@ namespace WarehouseSim
         {
             Line.Enqueue(truck);
             //TimeInUse++;  //does time need to be added when the truck joins the line? this time needs to be tracked somewhere
-            TotalTrucks++;
             TrucksInLine++;
 
             //this code will update the longest line throughout the day at the dock
@@ -78,6 +77,7 @@ namespace WarehouseSim
             // as each crate is unloaded, the value can be added to TotalSales, and unloading a crate adds one time unit to TimeInUse
             this.CurrentTruck = Line.Dequeue();
             TrucksInLine--;
+            TotalTrucksProcessed++;
             // the below line adds the truck that is being unloadeds crate count to the overall dock crate count
             TotalCrates += CurrentTruck.CrateCount;
             return CurrentTruck;

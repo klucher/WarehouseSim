@@ -22,14 +22,17 @@ namespace WarehouseSim
         private string TablePath {  get; set; }
         private DataTable Table { get; set; }
 
+        public Warehouse warehouseSim {  get; set; }
+
 
         // Tyler - I think you would need to add a constructor for the object and then you could access it from other classes when it is created?
         
         /// <summary>
         /// calls other methods to create a csv file by setting the file path and creating a data table
         /// </summary>
-        public CSV()
+        public CSV(Warehouse warehouseSim)
         {
+            this.warehouseSim = warehouseSim;
             TablePath = SetFilePath();
             Table = CreateDataTable();
         }
@@ -89,15 +92,15 @@ namespace WarehouseSim
         public void AddRow(Crate crate, Truck truck, Dock dock)
         {
             Table.Rows.Add(
-                dock.TimeInUse,         //time incrememnt of crate being unloaded
-                truck.Driver,           //truck driver's name
-                truck.DeliveryCompany,  //delivery company name
-                crate.Id,               //crate's id number
-                crate.Price,            //crate's value
-                string.Empty            //a string for one 3 scenarios depending on what happened:
-                                        //crate unloaded with truck still having more crates
-                                        //crate unloaded, truck is empty and no other trucks in line
-                                        //crate unloaded, truck empty and another truck is in line
+                warehouseSim.timeIntervals,         //time incrememnt of crate being unloaded
+                truck.Driver,                       //truck driver's name
+                truck.DeliveryCompany,              //delivery company name
+                crate.Id,                           //crate's id number
+                crate.Price,                        //crate's value
+                string.Empty                        //a string for one 3 scenarios depending on what happened:
+                                                    //crate unloaded with truck still having more crates
+                                                    //crate unloaded, truck is empty and no other trucks in line
+                                                    //crate unloaded, truck empty and another truck is in line
                 );
         }
 

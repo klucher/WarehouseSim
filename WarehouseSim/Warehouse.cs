@@ -106,7 +106,7 @@ namespace WarehouseSim
         /// </summary>
         public void Run()
         {
-            CSV fileCSV = new CSV();
+            CSV fileCSV = new CSV(this);
 
             int docksAmount = DockCount();
             // asks the user for the number of docks in the sim, then adds them to the list of docks

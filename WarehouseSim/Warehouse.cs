@@ -140,10 +140,6 @@ namespace WarehouseSim
                         lowestDockLine = Docks[i].TrucksInLine;
                         shortestDockIndex = i;
                     }
-                    else
-                    {
-                        Console.WriteLine("Something went wrong here.");
-                    }
                 }
 
             }

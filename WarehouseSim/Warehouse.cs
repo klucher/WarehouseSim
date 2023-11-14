@@ -99,6 +99,8 @@ namespace WarehouseSim
         /// </summary>
         public void Run()
         {
+            CSV fileCSV = new CSV();
+
             int docksAmount = DockCount();
             // asks the user for the number of docks in the sim, then adds them to the list of docks
             for (int i = 0; i < docksAmount; i++)
@@ -161,6 +163,9 @@ namespace WarehouseSim
 
                             // Update statistics for TimeInUse
                             dock.TimeInUse++;
+
+                            // Add row for current truck to CSV
+                            fileCSV.AddRow(dock.CurrentTruck.CurrentCrate, dock.CurrentTruck, dock);
                         }
                         else
                         {
@@ -193,8 +198,7 @@ namespace WarehouseSim
                         //broken for now, just need new variable in the above section somehow
 
                         // Tyler- created the CSV class object here and used the AddRow method with the new CurrentCrate variable
-                        CSV fileCSV = new CSV();
-
+                        
                         fileCSV.AddRow(dock.CurrentTruck.CurrentCrate, dock.CurrentTruck, dock);
 
 
@@ -212,6 +216,9 @@ namespace WarehouseSim
                 // debug
                 Console.WriteLine("Proceding to next time interval: " + timeIntervals);
             }
+
+            // After simulation finishes, write the CSV file
+            fileCSV.WriteToFile();
         }
         /// <summary>
         /// allows user to input number of docks in a warehouse

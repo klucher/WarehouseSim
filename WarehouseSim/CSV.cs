@@ -47,8 +47,8 @@ namespace WarehouseSim
                     Console.WriteLine("Error, please enter a valid file name.");
                 }
             }
-
-            TablePath = Path.Combine("..\\CSV\\", $"{fileName}.csv");
+            Console.WriteLine("CSV " + fileName + " created.");
+            TablePath = Path.Combine(".\\CSV\\", $"{fileName}.csv");
             return TablePath;
         }
 
@@ -117,8 +117,25 @@ namespace WarehouseSim
         /// </summary>
         public void WriteToFile()
         {
-            string csvContent = CreateCSV(Table);
-            File.WriteAllText(TablePath, csvContent);
+            try
+            {
+                // Create the directory if it doesn't exist
+                string directoryPath = Path.GetDirectoryName(TablePath);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                // Write the CSV content to the file
+                string csvContent = CreateCSV(Table);
+                File.WriteAllText(TablePath, csvContent);
+
+                Console.WriteLine($"CSV file successfully created at: {TablePath}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating CSV file: {ex.Message}");
+            }
         }
     }
 }

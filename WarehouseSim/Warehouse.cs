@@ -190,6 +190,12 @@ namespace WarehouseSim
                             dock.CurrentTruck.Unload();
                             //this should continue unloading once per time interval while the trailer is not empty
                             dock.TotalSales += dock.CurrentTruck.PrevCrateValue;
+                            if (timeIntervals == 48)
+                            {
+                                Console.WriteLine($"There are {dock.CurrentTruck.RemainingCrates} crates left in the truck at the end of the day.");
+                                //subtracting the remaining crates that were left in the truck during the last time interval
+                                dock.TotalCrates -= dock.CurrentTruck.RemainingCrates;
+                            }
 
                         }
                         //broken for now, just need new variable in the above section somehow

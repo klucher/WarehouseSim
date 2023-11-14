@@ -22,18 +22,10 @@ namespace WarehouseSim
         public Queue<Truck> Entrance { get; set; }
         public int timeIntervals { get; set; }
 
-        //this will change based on the situation with the crates to be returned as a string eventually
-        public int stringRep = 0;
-
         List<string> driverNames = new List<string>()
         {"Buddy", "Dude", "Elf", "DukeNukem", "Grinch", "Thomas", "Rando", "Frankfurter", "Billy", "Bob"};
         List<string> companyNames = new()
         {"AmazonTM", "MotherTrucker", "Ebay", "Diwali", "December", "November", "PlutoIsAPlant", "FreeWilly", "Pringles", "AlienWare"};
-
-        List<string> scenarios = new()
-        { "A crate was unloaded, but the truck still has more crates to unload",
-          "A crate was unloaded, and the truck has no more crates to unload",
-          "A crate was unloaded, and the truck has no more crates to unload, but another truck is NOT already in the Dock"};
 
         /// <summary>
         /// generate empty warehouse at beginning of day

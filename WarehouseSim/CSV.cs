@@ -92,17 +92,24 @@ namespace WarehouseSim
         public void AddRow(Crate crate, Truck truck, Dock dock)
         {
             string scene = string.Empty;
-            if(truck.CrateCount != 0)
+            if(truck.RemainingCrates != 0)
             {
                 scene = "A crate was unloaded but the truck still has more crates to unload";
             }
-            if(truck.CrateCount == 0 && dock.TrucksInLine == 0)
+            else if(truck.RemainingCrates == 0 && dock.TrucksInLine != 0)
             {
-                scene = "A crate was unloaded and the truck has no more crates to unload and another truck is already in the Dock";
+                scene = "A crate was unloaded and the truck has no more crates to unload and another truck is already in the Dock line";
+                Console.WriteLine($"trucks in line is {dock.TrucksInLine}"); //for troubleshooting
             }
-            if(truck.CrateCount == 0 && dock.TrucksInLine != 0)
+            else if(truck.RemainingCrates == 0 && dock.TrucksInLine == 0)
             {
-                scene = "A crate was unloaded and the truck has no more crates to unload but another truck is NOT already in the Dock";
+                scene = "A crate was unloaded and the truck has no more crates to unload but another truck is NOT already in the Dock line";
+                Console.WriteLine($"trucks in line is {dock.TrucksInLine}");  //for troubleshooting
+            }
+            else
+            {
+                scene = "Something wrong happened.";
+                Console.WriteLine("Something wrong happened here at the dock.");
             }
 
             Table.Rows.Add(

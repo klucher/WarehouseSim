@@ -25,7 +25,7 @@ namespace WarehouseSim
         List<string> driverNames = new List<string>()
         {"Buddy", "Dude", "Elf", "DukeNukem", "Grinch", "Thomas", "Rando", "Frankfurter", "Billy", "Bob"};
         List<string> companyNames = new()
-        {"AmazonTM", "MotherTrucker", "Ebay", "Diwali", "December", "November", "PlutoIsAPlant", "FreeWilly", "Pringles", "AlienWare"};
+        {"AmazonTM", "MotherTrucker", "Ebay", "Diwali", "December", "November", "PlutoIsAPlanet", "FreeWilly", "Pringles", "AlienWare"};
 
         /// <summary>
         /// generate empty warehouse at beginning of day

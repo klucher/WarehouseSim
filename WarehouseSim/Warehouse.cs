@@ -21,9 +21,7 @@ namespace WarehouseSim
         public List<Dock> Docks { get; set; }
         public Queue<Truck> Entrance { get; set; }
         public int timeIntervals { get; set; }
-
         public int TotTrucksSpawned { get; set; }
-
         public int DocksAmount { get; set; }
 
         List<string> driverNames = new List<string>()

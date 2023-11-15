@@ -21,9 +21,7 @@ namespace WarehouseSim
         public string DeliveryCompany { get; set; }
         public int CrateCount { get; set; }
         public int RemainingCrates { get; set; }
-
         public Crate CurrentCrate { get; set; }
-
         public double PrevCrateValue { get; set; }
         public double TruckValue { get; set; }
 

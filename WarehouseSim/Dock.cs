@@ -9,6 +9,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,11 +23,12 @@ namespace WarehouseSim
         public Queue<Truck> Line { get; set; }
         public double TotalSales { get; set; }
         public int TotalCrates { get; set; }
-        public int TotalTrucks { get; set; }
+        public int TotalTrucksProcessed { get; set; }
+        public int TrucksInLine {  get; set; }
+        public int LongestLine {  get; set; }
         public int TimeInUse { get; set; }
         public int TimeNotInUse { get; set; }
-
-        public Truck currentTruck { get; set; }
+        public Truck CurrentTruck { get; set; }
 
         private static int id = 0000001;
 
@@ -39,10 +42,12 @@ namespace WarehouseSim
             Line = new Queue<Truck>();
             TotalSales = 0;
             TotalCrates = 0;
-            TotalTrucks = 0;
+            TotalTrucksProcessed = 0;
+            TrucksInLine = 0;
+            LongestLine = 0;
             TimeInUse = 0;
             TimeNotInUse = 0;
-            currentTruck = null;
+            CurrentTruck = null;
         }
 
         /// <summary>
@@ -53,7 +58,13 @@ namespace WarehouseSim
         {
             Line.Enqueue(truck);
             //TimeInUse++;  //does time need to be added when the truck joins the line? this time needs to be tracked somewhere
-            TotalTrucks++;
+            TrucksInLine++;
+
+            //this code will update the longest line throughout the day at the dock
+            if (TrucksInLine > LongestLine)
+            {
+                LongestLine = TrucksInLine;
+            }
         }
 
         /// <summary>
@@ -64,8 +75,12 @@ namespace WarehouseSim
         {
             // does this method also need to make sure the truck is fully unloaded before it dequeues the truck? that needs to be done somewhere
             // as each crate is unloaded, the value can be added to TotalSales, and unloading a crate adds one time unit to TimeInUse
-            this.currentTruck = Line.Dequeue();
-            return currentTruck;
+            this.CurrentTruck = Line.Dequeue();
+            TrucksInLine--;
+            TotalTrucksProcessed++;
+            // the below line adds the truck that is being unloadeds crate count to the overall dock crate count
+            TotalCrates += CurrentTruck.CrateCount;
+            return CurrentTruck;
 
         }
 
@@ -75,12 +90,14 @@ namespace WarehouseSim
         /// <returns>false if truck is empty or no truck at all; returns true otherwise</returns>
         public bool Unloading()
         {
-            if (currentTruck == null)
+            if (CurrentTruck == null)
             {
                 return false;
             }
-            else if (currentTruck.Trailer.Peek() == null)
+            //else if (currentTruck.Trailer.Peek() == null )  //this was causing a crash when checking if the stack was == null?
+            else if (CurrentTruck.RemainingCrates == 0) 
             {
+                CurrentTruck = null; // when the remaining crates is zero we should have no current truck
                 return false;
             }
             else

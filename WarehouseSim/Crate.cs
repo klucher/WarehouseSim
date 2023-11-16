@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,8 +37,13 @@ namespace WarehouseSim
         /// <param name="Id">the unique ID number</param>
         public Crate()
         {
+            Random rand = new Random();
             Id = id++.ToString();
-            Price = new Random().Next(50, 501);
+            Price = rand.Next(50, 501);  //this was only returning ints not doubles
+            if (Price < 500)
+            {
+                Price = Math.Round(Price + rand.NextDouble(),2);
+            }
         }
     }
 }

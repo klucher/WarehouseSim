@@ -21,8 +21,7 @@ namespace WarehouseSim
     {
         private string TablePath {  get; set; }
         private DataTable Table { get; set; }
-
-        public Warehouse warehouseSim {  get; set; }
+        public Warehouse WarehouseSim {  get; set; }
 
 
         // Tyler - I think you would need to add a constructor for the object and then you could access it from other classes when it is created?
@@ -32,7 +31,7 @@ namespace WarehouseSim
         /// </summary>
         public CSV(Warehouse warehouseSim)
         {
-            this.warehouseSim = warehouseSim;
+            this.WarehouseSim = warehouseSim;
             TablePath = SetFilePath();
             Table = CreateDataTable();
         }
@@ -113,7 +112,7 @@ namespace WarehouseSim
             }
 
             Table.Rows.Add(
-                warehouseSim.timeIntervals,         //time incrememnt of crate being unloaded
+                WarehouseSim.timeIntervals,         //time incrememnt of crate being unloaded
                 truck.Driver,                       //truck driver's name
                 truck.DeliveryCompany,              //delivery company name
                 crate.Id,                           //crate's id number

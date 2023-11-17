@@ -40,7 +40,7 @@ namespace WarehouseSim
         }
 
         /// <summary>
-        /// adds each docks sales to a total score
+        /// calculates each docks sales when it is run and adds them to a total score
         /// </summary>
         /// <returns>total sales of all docks</returns>
         public double GetTotalSales()
@@ -96,9 +96,9 @@ namespace WarehouseSim
         }
 
         /// <summary>
-        /// Calculates the lowest line in any of the docks and returns the dock number
+        /// Calculates the lowest line in any of the docks and returns the dock number. if a line is empty and the dock is not unloading then that is prioritized
         /// </summary>
-        /// <returns></returns>
+        /// <returns>the dock indentifier that will be used to send trucks to for the shortest line</returns>
         public int GetLowestDockLine()
         {
             int lowestDockLine = Docks[0].TrucksInLine;
@@ -106,23 +106,6 @@ namespace WarehouseSim
             int shortestDockIndexAndNotLoading = -1;
             for (int i = 0; i < Docks.Count; i++)
             {
-                /*//selects the lowest line that is not actively unloading
-                if (Docks[i].TrucksInLine < lowestDockLine && !Docks[i].Unloading())
-                {
-                    lowestDockLine = Docks[i].TrucksInLine;
-                    shortestDockIndex = i;
-                }
-                //if all are unloading, selects the shortest line
-                else if (Docks[i].TrucksInLine < lowestDockLine)
-                {
-                    lowestDockLine = Docks[i].TrucksInLine;
-                    shortestDockIndex = i;
-                }
-                else
-                {
-                    Console.WriteLine("Something went wrong here.");
-                }*/
-
                 //selects the lowest line that is not actively unloading
                 if (!Docks[i].Unloading())
                 {
@@ -176,7 +159,7 @@ namespace WarehouseSim
                 if (Entrance.Count > 0)
                 {
                     // adding the truck to a random dock right now, need to add where this searches for the dock with the lowest line for efficiency?
-                    //int dockSelection = rand.Next(0, DocksAmount);
+                    //int dockSelection = rand.Next(0, DocksAmount);  this was used at the beginning to generate a random number for the truck to go to
                     int dockSelection = GetLowestDockLine();
                     Docks[dockSelection].JoinLine(Entrance.Dequeue());
 
@@ -187,7 +170,7 @@ namespace WarehouseSim
 
                 // OUTDATED COMMENT starting the simulation with a 50% chance each time interval to have a truck show up at the entrance.
                 // doing this after the entrance check since it says it will take 1 time interval to process trucks there
-                // later on can adjust this so that there is a bell curve of the trucks showing up with the middle of the day being the peak
+                // later on we adjusted this so that there is a bell curve of the trucks showing up with the middle of the day being the peak
                 if (ShouldTruckArrive(timeIntervals))
                 {
                     //get index of driver and company names lists
@@ -203,9 +186,6 @@ namespace WarehouseSim
 
                     //Debug
                     Console.WriteLine("Driver: " + truck.Driver + "\nCompany: " + truck.DeliveryCompany);
-
-                    // Update statistics for TotalTrucks
-                    // NEEDS CODE HERE
                 }
 
                 // check each dock to see if there is a truck actively unloading. if not, move the line up if there is a truck in line
@@ -263,14 +243,10 @@ namespace WarehouseSim
                             }
 
                         }
-                        //broken for now, just need new variable in the above section somehow
 
-                        // Tyler- created the CSV class object here and used the AddRow method with the new CurrentCrate variable
-                        
+                        // adds the current info for the time interval to a table that will be output to a CSV file row
                         fileCSV.AddRow(dock.CurrentTruck.CurrentCrate, dock.CurrentTruck, dock);
 
-
-                        //dock.TotalSales += dock.currentTruck.TruckValue; //this looks like it would overcount sales
 
                         // debug
                         Console.WriteLine($"Adding current truck value to total sales for dock {i+1}.");
@@ -288,6 +264,7 @@ namespace WarehouseSim
             // After simulation finishes, write the CSV file
             fileCSV.WriteToFile();
         }
+
         /// <summary>
         /// allows user to input number of docks in a warehouse
         /// </summary>
@@ -340,12 +317,5 @@ namespace WarehouseSim
             // If randomValue is less than probability, then a truck arrives.
             return randomvalue < probability;
         }
-
-        //In crate unload method (or somewhere like that, there needs to be a string that is returned if a crate is unloaded:
-        //crate unloaded, but there are still more trucks to unload
-        //crate unloaded, truck is empty AND another truck is in the dock
-        //crate unloaded, truck is empty AND there is NOT another truck in the dock
-
-        //potentially need to eventually create new method that opens new docks as it gets closer to noon and closes docks as it gets further away
     }
 }

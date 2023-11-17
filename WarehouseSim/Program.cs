@@ -27,7 +27,7 @@ namespace WarehouseSim
 
 
 
-            // adding some prints here to match the beginning of the assignment
+            // adding some prints here to match the report from the beginning of the assignment
             Console.WriteLine($"\n\nFor this run of the program there was {warehouse.DocksAmount} dock(s) simulated.");
             int TotTrucksProcessed = 0;
             for (int i = 0; i < warehouse.Docks.Count; i++)

@@ -33,7 +33,7 @@ namespace WarehouseSim
         private static int id = 0000001;
 
         /// <summary>
-        /// default constructor to create an empty dock
+        /// default constructor to create and intialize an empty dock
         /// </summary>
         /// <param name="Id">the name/UIN of the dock</param>
         public Dock()
@@ -57,7 +57,6 @@ namespace WarehouseSim
         public void JoinLine(Truck truck)
         {
             Line.Enqueue(truck);
-            //TimeInUse++;  //does time need to be added when the truck joins the line? this time needs to be tracked somewhere
             TrucksInLine++;
 
             //this code will update the longest line throughout the day at the dock
@@ -68,13 +67,11 @@ namespace WarehouseSim
         }
 
         /// <summary>
-        /// the method pulls a truck from the front of the line at a dock to be unloaded
+        /// the method pulls a truck from the front of the line at a dock to be unloaded. it decrements the count of trucks in line during this process
         /// </summary>
         /// <returns>returns the 1st truck</returns>
         public Truck SendOff()
         {
-            // does this method also need to make sure the truck is fully unloaded before it dequeues the truck? that needs to be done somewhere
-            // as each crate is unloaded, the value can be added to TotalSales, and unloading a crate adds one time unit to TimeInUse
             this.CurrentTruck = Line.Dequeue();
             TrucksInLine--;
             TotalTrucksProcessed++;
@@ -85,9 +82,9 @@ namespace WarehouseSim
         }
 
         /// <summary>
-        /// shows whether a truck is currently being unloaded at a dock
+        /// checks whether a truck is currently being unloaded at a dock
         /// </summary>
-        /// <returns>false if truck is empty or no truck at all; returns true otherwise</returns>
+        /// <returns>false if truck is empty and done unloading or if no truck at all; returns true otherwise</returns>
         public bool Unloading()
         {
             if (CurrentTruck == null)

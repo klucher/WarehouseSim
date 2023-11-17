@@ -24,10 +24,8 @@ namespace WarehouseSim
         public Warehouse WarehouseSim {  get; set; }
 
 
-        // Tyler - I think you would need to add a constructor for the object and then you could access it from other classes when it is created?
-
         /// <summary>
-        /// calls other methods to create a csv file by setting the file path and creating a data table
+        /// constructor that has access to the warehouse and calls other methods to create a csv file by setting the file path and creating a data table
         /// </summary>
         public CSV(Warehouse warehouseSim)
         {
@@ -107,7 +105,7 @@ namespace WarehouseSim
             }
             else
             {
-                scene = "Something wrong happened.";
+                scene = "Something wrong happened.";  //for troubleshooting
                 Console.WriteLine("Something wrong happened here at the dock.");
             }
 
@@ -145,7 +143,7 @@ namespace WarehouseSim
         }
 
         /// <summary>
-        /// all the data content that is turned into a table is returned as a file
+        /// all the data content that is turned into a table is written to a file with the given filepath name
         /// </summary>
         public void WriteToFile()
         {

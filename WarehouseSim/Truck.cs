@@ -28,7 +28,8 @@ namespace WarehouseSim
         public Stack<Crate> Trailer;
 
         /// <summary>
-        /// creates a truck with a driver and company sponsor and stack of crates
+        /// creates a truck with a driver and company sponsor that are passed in and creates a new stack of crates.
+        /// the number of crates in the truck is randomly generated from 5-15. the amount of crates that has not been unloaded yet is also tracked
         /// </summary>
         /// <param name="driver">the driver of this truck</param>
         /// <param name="deliveryCompany">the company the truck is shipping for</param>
@@ -75,7 +76,9 @@ namespace WarehouseSim
 
             // also accumulating the crate value while removing them from the truck
             PrevCrateValue = crate.Price;
+            //updates the trucks value as each crate is unloaded, since we cut off the unloading at the end of the 48 time increments
             TruckValue += crate.Price;
+            //decrements the count of the remaining crates now that one has been successfully unloaded
             RemainingCrates--;
             return crate;
         }
